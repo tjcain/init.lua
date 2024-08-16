@@ -37,15 +37,20 @@ return {
                     }
                 end,
 
-		["gopls"] = function()
+                ["gopls"] = function()
                     local lspconfig = require("lspconfig")
-		    lspconfig.gopls.setup({
-		    	capabilities = capabilities,
-			on_attach = function(client, bufnr)
-				vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-			end
-			})
-		end,
+                    lspconfig.gopls.setup({
+                        capabilities = capabilities,
+                        settings = {
+                            gopls = {
+                                buildFlags =  {"-tags=integration"},
+                            }
+                        },
+                        on_attach = function(client, bufnr)
+                            vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+                        end
+                    })
+                end,
 
                 ["lua_ls"] = function()
                     local lspconfig = require("lspconfig")
@@ -82,8 +87,8 @@ return {
                 { name = 'nvim_lsp' },
                 { name = 'luasnip' }, -- For luasnip users.
             }, {
-                { name = 'buffer' },
-            })
+                    { name = 'buffer' },
+                })
         })
 
         vim.diagnostic.config({
